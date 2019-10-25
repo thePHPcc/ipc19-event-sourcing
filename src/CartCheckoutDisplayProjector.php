@@ -6,7 +6,7 @@ class CartCheckoutDisplayProjector {
     public function project(CartItemCollection $cartItems): void {
         file_put_contents(
             '/tmp/cart.html',
-            print_r($cartItems, true)
+            \var_export($cartItems, true)
         );
     }
 }
