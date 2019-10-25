@@ -3,24 +3,23 @@ namespace Eventsourcing;
 
 class Checkout {
 
-    /** @var array */
-    private $eventLog = [];
+    private $eventLog;
 
-    /** @var bool */
     private $isStarted = false;
 
-    public function __construct(array $eventLog) {
+    public function __construct(EventLog $eventLog) {
         $this->replay($eventLog);
+        $this->eventLog = new EventLog();
     }
 
     public function start(): void {
         $event = new CheckoutStartedEvent();
-        $this->eventLog[] = $event;
+        $this->eventLog->add($event);
 
         $this->handleEvent($event);
     }
 
-    public function getChanges(): array {
+    public function getChanges(): EventLog {
         return $this->eventLog;
     }
 
@@ -28,7 +27,7 @@ class Checkout {
         $this->isStarted = true;
     }
 
-    private function replay(array $eventLog):void {
+    private function replay(EventLog $eventLog):void {
         foreach($eventLog as $event) {
             $this->handleEvent($event);
         }

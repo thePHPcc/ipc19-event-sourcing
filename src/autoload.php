@@ -13,6 +13,8 @@ spl_autoload_register(
                 'eventsourcing\\cartservice' => '/CartService.php',
                 'eventsourcing\\checkout' => '/Checkout.php',
                 'eventsourcing\\checkoutstartedevent' => '/CheckoutStartedEvent.php',
+                'eventsourcing\\event' => '/Event.php',
+                'eventsourcing\\eventlog' => '/EventLog.php',
                 'eventsourcing\\mail' => '/domain/Mail.php',
                 'eventsourcing\\mailservice' => '/MailService.php',
                 'eventsourcing\\sessionid' => '/domain/SessionId.php'

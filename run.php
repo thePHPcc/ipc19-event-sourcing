@@ -3,7 +3,7 @@ namespace Eventsourcing;
 
 require __DIR__ . '/src/autoload.php';
 
-$checkout = new Checkout([]);
+$checkout = new Checkout(new EventLog());
 $checkout->start();
 
 $listOfEvents = $checkout->getChanges();
