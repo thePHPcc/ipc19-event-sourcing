@@ -25,6 +25,7 @@ spl_autoload_register(
                 'eventsourcing\\eventreader' => '/EventReader.php',
                 'eventsourcing\\eventsourced' => '/EventSourced.php',
                 'eventsourcing\\eventwriter' => '/EventWriter.php',
+                'eventsourcing\\factory' => '/Factory.php',
                 'eventsourcing\\filesystemeventreader' => '/FileSystemEventReader.php',
                 'eventsourcing\\filesystemeventwriter' => '/FileSystemEventWriter.php',
                 'eventsourcing\\mail' => '/domain/Mail.php',
