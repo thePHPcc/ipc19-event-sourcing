@@ -3,16 +3,25 @@ namespace Eventsourcing;
 
 require __DIR__ . '/src/autoload.php';
 
-$checkoutService = new CheckoutService(new CartService, new FileSystemEventWriter);
 $sessionId = new SessionId('has4t1glskcktjh4ujs9eet26u');
 
+$dispatcher = new EventDispatcher();
+$dispatcher->registerListener(
+    new MyFirstEventListener
+);
 
-$checkoutService->start($sessionId);
-$checkoutService->persist($sessionId);
+$checkoutService = new CheckoutService(
+    $sessionId,
+    new CartService,
+    new FileSystemEventWriter,
+    new FileSystemEventReader,
+    $dispatcher
+);
 
+
+$checkoutService->start();
 
 // ...
 
 $checkoutService->defineBillingAddress(new BillingAddress());
-$checkoutService->persist($sessionId);
 

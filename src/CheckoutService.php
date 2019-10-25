@@ -6,29 +6,55 @@ class CheckoutService {
     /** @var CartService */
     private $cartService;
 
-    /** @var Checkout */
-    private $checkout;
-
     /** @var EventWriter */
     private $eventWriter;
 
-    public function __construct(CartService $cartService, EventWriter $writer) {
+    /** @var EventReader */
+    private $eventReader;
+
+    /** @var SessionId */
+    private $sessionId;
+
+    /** @var EventDispatcher */
+    private $dispatcher;
+
+    public function __construct(
+        SessionId $sessionId, CartService $cartService, EventWriter $writer,
+        EventReader $reader, EventDispatcher $dispatcher
+    ) {
+        $this->sessionId = $sessionId;
         $this->cartService = $cartService;
         $this->eventWriter = $writer;
-
-        $this->checkout = new Checkout(new EventLog());
+        $this->eventReader = $reader;
+        $this->dispatcher = $dispatcher;
     }
 
-    public function start(SessionId $id): void {
-        $this->checkout->start($this->cartService->getCartItems($id));
+    public function start(): void {
+        $checkout = $this->loadCheckout();
+        $checkout->start($this->cartService->getCartItems($this->sessionId));
+        $this->persist($checkout->getChanges());
     }
 
     public function defineBillingAddress(BillingAddress $address): void {
-        $this->checkout->defineBillingAddress($address);
+        $checkout = $this->loadCheckout();
+        $checkout->defineBillingAddress($address);
+        $this->persist($checkout->getChanges());
     }
 
-    public function persist(SessionId $id): void {
-        $listOfEvents = $this->checkout->getChanges();
-        $this->eventWriter->write($id, $listOfEvents);
+    private function persist(EventLog $log): void {
+        $this->eventWriter->write($this->sessionId, $log);
+
+        foreach($log as $event) {
+            $this->dispatcher->notify($event);
+        }
+    }
+
+    private function loadCheckout(): Checkout {
+        if (!$this->eventReader->has($this->sessionId)) {
+            return new Checkout(new EventLog);
+        }
+
+        $eventLog = $this->eventReader->read($this->sessionId);
+        return new Checkout($eventLog);
     }
 }

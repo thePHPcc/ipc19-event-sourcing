@@ -14,14 +14,14 @@ final class Checkout extends EventSourced {
     private $billingAddress;
 
     public function start(CartItemCollection $cartItems): void {
+        $this->ensureNotStarted();
+
         $event = new CheckoutStartedEvent($cartItems);
         $this->processEvent($event);
     }
 
     public function defineBillingAddress(BillingAddress $address): void {
-        if ($this->cartItems === null) {
-            throw new RuntimeException('Not started yet!');
-        }
+        $this->ensureStarted();
 
         $event = new BillingAddressDefinedEvent($address);
         $this->processEvent($event);
@@ -45,6 +45,18 @@ final class Checkout extends EventSourced {
 
     private function handleBillingAddressDefinedEvent(BillingAddressDefinedEvent $event) {
         $this->billingAddress = $event->getAddress();
+    }
+
+    private function ensureNotStarted(): void {
+        if ($this->cartItems !== null) {
+            throw new RuntimeException('Already started');
+        }
+    }
+
+    private function ensureStarted(): void {
+        if ($this->cartItems === null) {
+            throw new RuntimeException('Not started yet!');
+        }
     }
 
 }
