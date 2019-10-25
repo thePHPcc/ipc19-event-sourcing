@@ -14,10 +14,13 @@ spl_autoload_register(
                 'eventsourcing\\cartnotfoundexception' => '/domain/CartNotFoundException.php',
                 'eventsourcing\\cartservice' => '/CartService.php',
                 'eventsourcing\\checkout' => '/Checkout.php',
+                'eventsourcing\\checkoutservice' => '/CheckoutService.php',
                 'eventsourcing\\checkoutstartedevent' => '/CheckoutStartedEvent.php',
                 'eventsourcing\\event' => '/Event.php',
                 'eventsourcing\\eventlog' => '/EventLog.php',
                 'eventsourcing\\eventsourced' => '/EventSourced.php',
+                'eventsourcing\\eventwriter' => '/EventWriter.php',
+                'eventsourcing\\filesystemeventwriter' => '/FileSystemEventWriter.php',
                 'eventsourcing\\mail' => '/domain/Mail.php',
                 'eventsourcing\\mailservice' => '/MailService.php',
                 'eventsourcing\\sessionid' => '/domain/SessionId.php'

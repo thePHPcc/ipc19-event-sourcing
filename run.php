@@ -3,16 +3,16 @@ namespace Eventsourcing;
 
 require __DIR__ . '/src/autoload.php';
 
-$cartService = new CartService();
+$checkoutService = new CheckoutService(new CartService, new FileSystemEventWriter);
+$sessionId = new SessionId('has4t1glskcktjh4ujs9eet26u');
 
-$checkout = new Checkout(new EventLog());
-$checkout->start(
-    $cartService->getCartItems(new SessionId('has4t1glskcktjh4ujs9eet26u'))
-);
-$checkout->defineBillingAddress(new BillingAddress());
 
-$listOfEvents = $checkout->getChanges();
+$checkoutService->start($sessionId);
+$checkoutService->persist($sessionId);
 
-//\var_dump($listOfEvents);
-var_dump($checkout);
+
+// ...
+
+$checkoutService->defineBillingAddress(new BillingAddress());
+$checkoutService->persist($sessionId);
 
