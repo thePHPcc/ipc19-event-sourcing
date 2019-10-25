@@ -7,6 +7,8 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'eventsourcing\\billingaddress' => '/BillingAddress.php',
+                'eventsourcing\\billingaddressdefinedevent' => '/BillingAddressDefinedEvent.php',
                 'eventsourcing\\cartitem' => '/domain/CartItem.php',
                 'eventsourcing\\cartitemcollection' => '/domain/CartItemCollection.php',
                 'eventsourcing\\cartnotfoundexception' => '/domain/CartNotFoundException.php',
@@ -15,6 +17,7 @@ spl_autoload_register(
                 'eventsourcing\\checkoutstartedevent' => '/CheckoutStartedEvent.php',
                 'eventsourcing\\event' => '/Event.php',
                 'eventsourcing\\eventlog' => '/EventLog.php',
+                'eventsourcing\\eventsourced' => '/EventSourced.php',
                 'eventsourcing\\mail' => '/domain/Mail.php',
                 'eventsourcing\\mailservice' => '/MailService.php',
                 'eventsourcing\\sessionid' => '/domain/SessionId.php'

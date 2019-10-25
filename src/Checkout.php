@@ -1,34 +1,50 @@
 <?php declare(strict_types = 1);
 namespace Eventsourcing;
 
-class Checkout {
-    private $eventLog;
+use RuntimeException;
+
+final class Checkout extends EventSourced {
+
+    /** @var null|CartItemCollection */
+    private $cartItems;
 
     private $isStarted = false;
 
-    public function __construct(EventLog $eventLog) {
-        $this->replay($eventLog);
-        $this->eventLog = new EventLog();
+    /** @var null|BillingAddress */
+    private $billingAddress;
+
+    public function start(CartItemCollection $cartItems): void {
+        $event = new CheckoutStartedEvent($cartItems);
+        $this->processEvent($event);
     }
 
-    public function start(): void {
-        $event = new CheckoutStartedEvent();
-        $this->eventLog->add($event);
+    public function defineBillingAddress(BillingAddress $address): void {
+        if ($this->cartItems === null) {
+            throw new RuntimeException('Not started yet!');
+        }
 
-        $this->handleEvent($event);
+        $event = new BillingAddressDefinedEvent($address);
+        $this->processEvent($event);
     }
 
-    public function getChanges(): EventLog {
-        return $this->eventLog;
+    protected function handleEvent(Event $event): void {
+        if ($event instanceof CheckoutStartedEvent) {
+            $this->handleStartedEvent($event);
+            return;
+        }
+
+        if ($event instanceof BillingAddressDefinedEvent) {
+            $this->handleBillingAddressDefinedEvent($event);
+        }
     }
 
-    private function handleEvent(CheckoutStartedEvent $event): void {
+    private function handleStartedEvent(CheckoutStartedEvent $event): void {
+        $this->cartItems = $event->getCartItems();
         $this->isStarted = true;
     }
 
-    private function replay(EventLog $eventLog): void {
-        foreach ($eventLog as $event) {
-            $this->handleEvent($event);
-        }
+    private function handleBillingAddressDefinedEvent(BillingAddressDefinedEvent $event) {
+        $this->billingAddress = $event->getAddress();
     }
+
 }
