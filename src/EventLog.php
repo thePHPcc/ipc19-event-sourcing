@@ -1,7 +1,11 @@
 <?php declare(strict_types = 1);
 namespace Eventsourcing;
 
-class EventLog {
+use ArrayIterator;
+use IteratorAggregate;
+use Traversable;
+
+class EventLog implements IteratorAggregate {
 
     /** @var Event[] */
     private $events = [];
@@ -17,6 +21,10 @@ class EventLog {
 
     public function add(Event $event) {
         $this->events[] = $event;
+    }
+
+    public function getIterator(): ArrayIterator {
+        return new ArrayIterator($this->events);
     }
 
 }
