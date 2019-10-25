@@ -7,8 +7,9 @@ $sessionId = new SessionId('has4t1glskcktjh4ujs9eet26u');
 
 $dispatcher = new EventDispatcher();
 $dispatcher->registerListener(
-    new MyFirstEventListener
+    new CheckoutCartDisplayUpdater(new CartCheckoutDisplayProjector())
 );
+
 
 $checkoutService = new CheckoutService(
     $sessionId,

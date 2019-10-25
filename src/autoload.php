@@ -9,11 +9,13 @@ spl_autoload_register(
             $classes = array(
                 'eventsourcing\\billingaddress' => '/BillingAddress.php',
                 'eventsourcing\\billingaddressdefinedevent' => '/BillingAddressDefinedEvent.php',
+                'eventsourcing\\cartcheckoutdisplayprojector' => '/CartCheckoutDisplayProjector.php',
                 'eventsourcing\\cartitem' => '/domain/CartItem.php',
                 'eventsourcing\\cartitemcollection' => '/domain/CartItemCollection.php',
                 'eventsourcing\\cartnotfoundexception' => '/domain/CartNotFoundException.php',
                 'eventsourcing\\cartservice' => '/CartService.php',
                 'eventsourcing\\checkout' => '/Checkout.php',
+                'eventsourcing\\checkoutcartdisplayupdater' => '/CheckoutCartDisplayUpdater.php',
                 'eventsourcing\\checkoutservice' => '/CheckoutService.php',
                 'eventsourcing\\checkoutstartedevent' => '/CheckoutStartedEvent.php',
                 'eventsourcing\\event' => '/Event.php',

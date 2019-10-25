@@ -3,11 +3,19 @@ namespace Eventsourcing;
 
 class CheckoutCartDisplayUpdater implements EventListener {
 
-    /** @var CartDisplayProjector */
-    private $cartDisplayProjector;
+    /** @var CartCheckoutDisplayProjector */
+    private $projector;
+
+    public function __construct(CartCheckoutDisplayProjector $projector) {
+        $this->projector = $projector;
+    }
 
     public function notify(Event $event): void {
-        // TODO: Implement notify() method.
+        if (!$event instanceof CheckoutStartedEvent) {
+            return;
+        }
+
+        $this->projector->project($event->getCartItems());
     }
 
 }
