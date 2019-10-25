@@ -2,7 +2,6 @@
 namespace Eventsourcing;
 
 class Checkout {
-
     private $eventLog;
 
     private $isStarted = false;
@@ -27,10 +26,9 @@ class Checkout {
         $this->isStarted = true;
     }
 
-    private function replay(EventLog $eventLog):void {
-        foreach($eventLog as $event) {
+    private function replay(EventLog $eventLog): void {
+        foreach ($eventLog as $event) {
             $this->handleEvent($event);
         }
     }
-
 }

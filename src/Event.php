@@ -2,5 +2,4 @@
 namespace Eventsourcing;
 
 interface Event {
-
 }

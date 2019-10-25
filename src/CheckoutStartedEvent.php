@@ -2,5 +2,4 @@
 namespace Eventsourcing;
 
 class CheckoutStartedEvent implements Event {
-
 }

@@ -3,7 +3,6 @@ namespace Eventsourcing;
 
 use ArrayIterator;
 use IteratorAggregate;
-use Traversable;
 
 class EventLog implements IteratorAggregate {
 
@@ -12,19 +11,19 @@ class EventLog implements IteratorAggregate {
 
     public static function fromArray(array $events): EventLog {
         $log = new self();
-        foreach($events as $event) {
+
+        foreach ($events as $event) {
             $log->add($event);
         }
 
         return $log;
     }
 
-    public function add(Event $event) {
+    public function add(Event $event): void {
         $this->events[] = $event;
     }
 
     public function getIterator(): ArrayIterator {
         return new ArrayIterator($this->events);
     }
-
 }
